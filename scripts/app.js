@@ -26,7 +26,7 @@ $(function() {
       $('#image-slider').twentytwenty({
         default_offset_pct: data['defaultSlidePosition']
       });
-    }, 0);
+    }, 300);
 
     // ready, so show
     $('#main-container').show();
