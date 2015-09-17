@@ -1,5 +1,5 @@
 $(function() {
-  $.getJSON('../config.json', function(data) {
+  $.getJSON('config.json', function(data) {
     // update headline
     $('#title').html(data['title']);
 
