@@ -1,0 +1,28 @@
+{
+  "title": "Indicators Explorer",
+  "defaultSlidePosition": 0.5,
+  "leftSelector": {
+    "name": "Climate Indicator",
+    "images": [{
+        "name": "Precipitation Change",
+        "source": "maps/Health_Indicators_PrecipChange.jpg",
+        "default": true
+      }
+    ]
+  },
+  "rightSelector": {
+    "name": "Agricultural Indicator",
+    "images": [{
+        "name": "Chicken Inventory",
+        "source": "maps/Broilers_inventory_sqmi_2012.png",
+        "default": true
+      }, {
+        "name": "Cattle Inventory",
+        "source": "maps/Cattle_inventory_sq_mi_2012.png"
+      }, {
+        "name": "Poultry Farms",
+        "source": "maps/Poultry_farms_sqmi_2012.png"
+      }
+    ]
+  }
+}
