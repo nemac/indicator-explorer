@@ -1,0 +1,25 @@
+{
+  "name": "map-compare",
+  "version": "0.0.0",
+  "description": "",
+  "main": "map-compare-widget/map-compare-widget.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemac/indicator-explorer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nemac/indicator-explorer/issues"
+  },
+  "homepage": "https://github.com/nemac/indicator-explorer"
+}

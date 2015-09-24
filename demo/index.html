@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Viewer Example</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="scripts/vendor/skeleton.css" type="text/css" />
+  <link rel="stylesheet" href="scripts/map-compare-widget/map-compare-widget-min.css" type="text/css" media="screen" />
+</head>
+<body>
+  <div id="demo"></div>
+  <hr />
+  <div id="demo2"></div>
+
+  <script src="scripts/vendor/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script src="scripts/vendor/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="scripts/map-compare-widget/map-compare-widget-min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  $(function() {
+    $('#demo').mapCompare({config: 'config.json'});
+
+    $('#demo2').mapCompare({config: {
+      "defaultSlidePosition": 0.25,
+      "leftSelector": {
+        "name": "Climate Indicator",
+        "images": [{
+            "name": "Precipitation Change",
+            "source": "maps/Health_Indicators_PrecipChange.jpg",
+            "default": true
+          }
+        ]
+      },
+      "rightSelector": {
+        "name": "Agricultural Indicator",
+        "images": [{
+            "name": "Chicken Inventory",
+            "source": "maps/Broilers_inventory_sqmi_2012.png"
+          }, {
+            "name": "Cattle Inventory",
+            "source": "maps/Cattle_inventory_sq_mi_2012.png",
+            "default": true
+          }, {
+            "name": "Poultry Farms",
+            "source": "maps/Poultry_farms_sqmi_2012.png"
+          }
+        ]
+      }
+    }});
+  });
+  </script>
+</body>
+</html>
