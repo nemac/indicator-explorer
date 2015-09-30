@@ -17,12 +17,12 @@ Note that the following libraries are incorporated into the source of the indica
 
 ```javascript
 // Provide a path to a standalone config file
-$('#map-compare').mapCompare(config: 'config.json');
+$('#map-compare').mapCompare({config: 'config.json'});
 
 // or provide the desired options as an object
-$('#map-compare').mapCompare(config: {
+$('#map-compare').mapCompare({config: {
   // config options
-});
+}});
 ```
 
 See the demo directory for a working demo.
