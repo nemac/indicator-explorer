@@ -1,5 +1,5 @@
-# Indicators Explorer Widget
-The indicators explorer is a reusable and embeddable jQuery Widget that allows for quick comparison between two sets of selectable map images. The widget is configuration-driven and therefore can be reused with only modifications to configuration.
+# Map Compare Widget
+The Map Compare Widget is a reusable and embeddable jQuery Widget that allows for quick comparison between two sets of selectable map images. The widget is configuration-driven and therefore can be reused with only modifications to configuration.
 
 ## Dependencies
 - jQuery
@@ -31,8 +31,10 @@ See the demo directory for a working demo.
 ```javascript
 {
   "defaultSlidePosition": 0.5,    // default starting position of the slider
+  "type": "swipe",                 // type of compare: swipe, fade
   "leftSelector": {
     "name": "Climate Indicator",  // name that appears above left selector
+    "type": "drop-down",          // type of selector to use: drop-down, radio
     "images": [{                  // array of images
         "name": "Image Name to Appear in Selector",
         "source": "path/to/image.jpg",
@@ -42,11 +44,12 @@ See the demo directory for a working demo.
   },
   "rightSelector": {}             // functions the same as the left selector
 }
-
 ```
 
+Note that if only one image is defined, no selector is drawn.
+
 ## Building the source
-The [map-compare-widget](/map-compare-widget/) directory contains the non-minifed source in addition to minified builds. Should it be desired to make changes to the script, the included gulp file will handle the minification and update to the demo for testing.
+The [map-compare-widget](/map-compare-widget/) directory contains the non-minifed source in addition to minified builds. The minified builds should be sufficient for most needs, but should it be desired to make changes to the script, the included gulp file will handle the minification and update to the demo for testing.
 
 ### Dependencies
 - node.js

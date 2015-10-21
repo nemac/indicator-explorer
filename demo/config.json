@@ -1,5 +1,6 @@
 {
-  "defaultSlidePosition": 0.5,
+  "defaultSlidePosition": 0,
+  "type": "fade",
   "leftSelector": {
     "name": "Climate Indicator",
     "images": [{
@@ -11,16 +12,17 @@
   },
   "rightSelector": {
     "name": "Agricultural Indicator",
+    "type": "radio",
     "images": [{
         "name": "Chicken Inventory",
-        "source": "maps/Broilers_inventory_sqmi_2012.png",
-        "default": true
+        "source": "maps/Broilers_inventory_sqmi_2012.png"
       }, {
         "name": "Cattle Inventory",
         "source": "maps/Cattle_inventory_sq_mi_2012.png"
       }, {
         "name": "Poultry Farms",
-        "source": "maps/Poultry_farms_sqmi_2012.png"
+        "source": "maps/Poultry_farms_sqmi_2012.png",
+        "default": true
       }
     ]
   }

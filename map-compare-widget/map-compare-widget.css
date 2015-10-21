@@ -1,3 +1,23 @@
+.nem-mcw-container label {
+  display: inline;
+  margin-right: 10px;
+}
+
+.nem-mcw-container form {
+  margin-bottom: 0px;
+}
+
+.nem-mcw-container .fader {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  z-index: 50;
+}
+
+.nem-mcw-container .fader label {
+  margin-left: 4px;
+}
+
 .twentytwenty-horizontal .twentytwenty-handle:before, .twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-vertical .twentytwenty-handle:before, .twentytwenty-vertical .twentytwenty-handle:after {
   content: " ";
   display: block;

@@ -33,68 +33,129 @@
       // populate right select
       populateSide(elemId, 'right', config['rightSelector']);
 
-      // bind select events
-      $('select.image-selector').on('change', function(a, b) {
-        if ($(this).hasClass('right-selector')) {
-          $(elemId + ' img.image-right').attr('src', $(this).val());
-        } else {
-          $(elemId + ' img.image-left').attr('src', $(this).val());
-        }
-      });
-
       // fire select to set the images
-      $('select.image-selector').trigger('change');
+      $(elemId).find('.image-selector').trigger('change');
 
-      // init image box
-      setTimeout(function() {
-        $(elemId + ' div.image-slider').twentytwenty({
-          default_offset_pct: config['defaultSlidePosition']
+      if (config['type'] === "fade") {
+        // set up images to display on top of each other
+        $(elemId).find('img.image-left').on('load', function() {
+          $(elemId).find('div.twentytwenty-container').height($(this).height());
         });
-      }, 300);
+
+        $(elemId).find('.fader').append('<label>Transparency</label><br /><input type="range" min="0" max="1" step="0.01" value="' + config['defaultSlidePosition'] + '" />');
+        $(elemId).find('.fader').val('0').on('input change', function(e) {
+          $(elemId).find('.image-left').css('opacity', 1 - e.target.value);
+        });
+
+        // set initial opacity
+        $(elemId).find('.image-left').css('opacity', 1 - config['defaultSlidePosition']);
+
+      } else {
+        // init image box
+        setTimeout(function() {
+          $(elemId).find('.image-slider').twentytwenty({
+            default_offset_pct: config['defaultSlidePosition']
+          });
+        }, 300);
+      }
 
       // ready, so show
-      $(elemId + ' div.main-container').show();
+      $(elemId).find('div.main-container').show();
     }
   });
 
   //
   // STATICS
   //
-  function populateSide(ref, side, sideData) {
-    $(ref + ' label.' + side + '-label').html(sideData['name']);
+  function populateSide(elemId, side, sideData) {
+    var $containerRef = $(elemId).find(' div.' + side + '-container');
 
-    var $selector = $(ref + ' select.' + side + '-selector');
-    $.each(sideData['images'], function() {
+    // change label in container
+    $containerRef.find('label').html(sideData['name']);
+
+    // deploy template based on selector type
+    var type = sideData['type'] === 'radio' ? 'radio' : 'drop-down';
+
+    //$containerRef.find('div.selector').append(SELECTOR_TEMPLATES[type]);
+    $containerRef.append(SELECTOR_TEMPLATES[type]);
+
+    // deploy options to selector, bind change event
+    var $selector = $containerRef.find('.image-selector');
+    var $imageRef = $(elemId + ' img.image-' + side);
+    var images = sideData['images'];
+
+    if (type === 'radio') {
+      populateRadioSelector($selector, $imageRef, images);
+      // take up a whole row
+      $selector.parent().removeClass('four').addClass('twelve');
+      $containerRef.find('.filler-container').hide();
+    } else {
+      populateDropDown($selector, $imageRef, images);
+    }
+
+    // make selector section invisible if only one image
+    if (sideData['images'].length === 1) {
+      $containerRef.hide();
+    }
+  }
+
+  function populateRadioSelector($selector, $imageRef, images) {
+    $.each(images, function() {
+      var $label = $('<label />')
+      $label.append($('<input type="radio" name="sl" />').val(this['source']));
+      $label.append($('<span class="label-body" />').text(this['name']));
+
+      $selector.append($label);
+
+      if (this['default']) {
+        $('input[name=sl][value="' + this['source'] + '"]').prop('checked', true);
+      }
+    });
+
+    $selector.on('change', function() {
+      $imageRef.attr('src', $("input[name='sl']:checked").val());
+    });
+  }
+
+  function populateDropDown($selector, $imageRef, images) {
+    $.each(images, function() {
       $selector.append($('<option />').val(this['source']).text(this['name']));
       if (this['default']) {
         $selector.val(this['source']);
       }
     });
+
+    $selector.on('change', function() {
+      $imageRef.attr('src', $(this).val());
+    });
+  }
+
+  var SELECTOR_TEMPLATES = {
+    'radio': '<form class="image-selector"></form>',
+    'drop-down': '<select class="nem-mcw-u-full-width image-selector"></select>'
   }
 
   var TEMPLATE =
   '<div class="nem-mcw-container main-container" style="display: none;">' +
     '<div class="nem-mcw-row">' +
-      '<div class="four nem-mcw-columns">' +
-        '<label class="left-label">Left Elements</label>' +
-        '<select class="nem-mcw-u-full-width image-selector left-selector"></select>' +
+      '<div class="four nem-mcw-columns left-container">' +
+        '<label>Side Elements</label>' +
       '</div>' +
-      '<div class="four nem-mcw-columns">&nbsp;</div>' +
-      '<div class="four nem-mcw-columns">' +
-        '<label class="right-label">Right Elements</label>' +
-        '<select class="nem-mcw-u-full-width image-selector right-selector"></select>' +
+      '<div class="four nem-mcw-columns filler-container">&nbsp;</div>' +
+      '<div class="four nem-mcw-columns right-container">' +
+        '<label>Side Elements</label>' +
       '</div>' +
     '</div>' +
     '<div class="nem-mcw-row">' +
       '<div class="twelve nem-mcw-columns twentytwenty-container">' +
         '<div class="image-slider">' +
-          '<img class="image-left" />' +
-          '<img class="image-right" />' +
+          '<img class="image-left twentytwenty-before" />' +
+          '<img class="image-right twentytwenty-after" />' +
+          '<div class="fader"></div>' +
         '</div>' +
       '</div>' +
     '</div>' +
   '</div>';
-
 
   // ---------------------------------------------------------------------------
   //
