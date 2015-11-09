@@ -13,15 +13,16 @@
     //
     _create: function() {
       this.element.empty();
-      this.element.html(TEMPLATE);
       var widget = this;
       var elemId = '#' + $(this.element).attr('id');
 
       if (typeof this.options.config === 'string') {
         $.getJSON(this.options.config, function(data){
+          widget.element.html(buildTemplate(data));
           widget._deployApp(data, elemId);
         });
       } else {
+        this.element.html(buildTemplate(this.options.config));
         this._deployApp(this.options.config, elemId);
       }
     },
@@ -104,10 +105,20 @@
     }
   }
 
+  /**
+   * Populates the selection methods for radio type comparisons & binds relevant events
+   */
   function populateRadioSelector($selector, $imageRef, $legendRef, images) {
+    var labelClass = buttonClass(images.length);
+
     $.each(images, function() {
-      var $label = $('<label />')
-      $label.append($('<input type="radio" name="sl" />').val(this['source']).data('legend', this['legend']));
+      var $label = $('<label />').addClass(labelClass);
+      $label.append($('<input type="radio" name="sl" />')
+                    .val(this['source'])
+                    .data('alt', this['alt'])
+                    .data('legend', this['legend'])
+                    .data('legend-alt', this['legend-alt'])
+                   );
       $label.append($('<span class="label-body" />').text(this['name']));
 
       $selector.append($label);
@@ -115,7 +126,11 @@
       if (this['default']) {
         $('input[name=sl][value="' + this['source'] + '"]').prop('checked', true);
         $label.addClass("on");
-        $legendRef.attr('src', this["legend"]);
+        $imageRef.attr('alt', this["alt"])
+            .attr('title', this["alt"]);
+        $legendRef.attr('src', this["legend"])
+            .attr('alt', this["legend-alt"])
+            .attr('title', this["legend-alt"]);
       }
 
       $label.click(function () {
@@ -125,23 +140,73 @@
     });
 
     $selector.on('change', function() {
-      $imageRef.attr('src', $("input[name='sl']:checked").val());
-      $legendRef.attr('src', $("input[name='sl']:checked").data("legend"));
+      var $elem = $("input[name='sl']:checked");
+      $imageRef.attr('src', $elem.val())
+            .attr('alt', $elem.data("alt"))
+            .attr('title', $elem.data("alt"));
+      $legendRef.attr('src', $elem.data("legend"))
+            .attr('alt', $elem.data("legendAlt"))
+            .attr('title', $elem.data("legendAlt"));
     });
+  }
+
+  /**
+   * Generates class that controls display width of radio button inputs
+   *
+   * @param number length
+   * @return string 
+   */
+  function buttonClass (length) {
+    var btnClass = "nem-mcw-button-";
+    switch (length) {
+      case 1:
+        btnClass += "whole";
+        break;
+      case 2:
+        btnClass += "half";
+        break;
+      case 3:
+        btnClass += "third";
+        break;
+      case 4:
+        btnClass += "fourth";
+        break;
+      case 5:
+        btnClass += "fifth";
+        break;
+      default:
+        btnClass += "default";
+        break;
+    }
+
+    return btnClass;
   }
 
   function populateDropDown($selector, $imageRef, $legendRef, images) {
     $.each(images, function() {
-      $selector.append($('<option />').val(this['source']).text(this['name']).data('legend', this['legend']));
+      $selector.append($('<option />')
+                       .val(this['source'])
+                       .text(this['name'])
+                       .data('alt', this['alt'])
+                       .data('legend', this['legend'])
+                       .data('legend-alt', this['legend-alt']));
       if (this['default']) {
         $selector.val(this['source']);
-        $legendRef.attr('src', this["legend"]);
+        $imageRef.attr('alt', this["alt"])
+            .attr('title', this["alt"]);
+        $legendRef.attr('src', this["legend"])
+            .attr('alt', this["legend-alt"])
+            .attr('title', this["legend-alt"]);
       }
     });
 
     $selector.on('change', function() {
-      $imageRef.attr('src', $(this).val());
-      $legendRef.attr('src', $(this).data("legend"));
+      $imageRef.attr('src', $(this).val())
+            .attr('alt', $(this).data("alt"))
+            .attr('title', $(this).data("alt"));
+      $legendRef.attr('src', $(this).data("legend"))
+            .attr('alt', $(this).data("legendAlt"))
+            .attr('title', $(this).data("legendAlt"));
     });
   }
 
@@ -150,29 +215,62 @@
     'drop-down': '<select class="nem-mcw-u-full-width image-selector"></select>'
   }
 
-  var TEMPLATE =
-  '<div class="nem-mcw-container main-container" style="display: none;">' +
-    '<div class="nem-mcw-row">' +
-      '<div class="four nem-mcw-columns left-container">' +
-        '<label></label>' +
-      '</div>' +
-      '<div class="four nem-mcw-columns filler-container"></div>' +
-      '<div class="four nem-mcw-columns right-container">' +
-        '<label></label>' +
-      '</div>' +
-    '</div>' +
-    '<div class="nem-mcw-row">' +
-      '<div class="twelve nem-mcw-columns twentytwenty-container">' +
-        '<div class="image-slider">' +
-          '<img class="image-left twentytwenty-before" />' +
-          '<img class="image-right twentytwenty-after" />' +
-          '<div class="fader"></div>' +
-        '</div>' +
-        '<img class="image-left-legend twentytwenty-legend" />' +
-        '<img class="image-right-legend twentytwenty-legend" />' +
-      '</div>' +
-    '</div>' +
-  '</div>';
+  function buildTemplate (config) {
+    var left = config['leftSelector'];
+    var right = config['rightSelector'];
+
+    var html = '<div class="nem-mcw-container main-container" style="display: none;">' +
+          '<div class="nem-mcw-row">';
+
+    if (left) {
+      html += '<div class="four nem-mcw-columns left-container">' +
+            '<label></label>' +
+            '</div>';
+    }
+
+    if (left && left['type'] === 'radio' || right && right['type'] === 'radio') {
+      html += '<div class="four nem-mcw-columns filler-container"></div>';
+    }
+
+    if (right) {
+      html += '<div class="four nem-mcw-columns right-container">' +
+            '<label></label>' +
+          '</div>';
+    }
+
+    html += '</div>' +
+        '<div class="nem-mcw-row">' +
+          '<div class="twelve nem-mcw-columns twentytwenty-container">' +
+            '<div class="image-slider">';
+
+    if (left) {
+      html +='<img class="image-left twentytwenty-before" />';
+    }
+
+    if (right) {
+      html +='<img class="image-right twentytwenty-after" />';
+    }
+
+    if (left && right) {
+      html += '<div class="fader"></div>';
+    }
+
+    html += '</div>';
+
+    if (left && left['images'][0]['legend']) {
+      html += '<img class="image-left-legend twentytwenty-legend" />';
+    }
+
+    if (right && right['images'][0]['legend']) {
+      html += '<img class="image-right-legend twentytwenty-legend" />';
+    }
+
+    html += '</div>' +
+          '</div>' +
+          '</div>';
+
+    return html;
+  }
 
   // ---------------------------------------------------------------------------
   //
