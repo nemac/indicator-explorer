@@ -11,6 +11,11 @@
     //
     // Private methods
     //
+
+    /**
+     * Parses the config file||string for the maps and invokes functions that create the
+     * necessary elements.
+     */
     _create: function() {
       this.element.empty();
       var widget = this;
@@ -27,6 +32,12 @@
       }
     },
 
+    /**
+     * Creates all of the UI elements & images. Binds appropriate handlers to them.
+     *
+     * @param Object config - Parsed configuration options
+     * @param String elemId - Reference to the top level element that contains the images & UI
+     */
     _deployApp: function(config, elemId) {
       // populate left select
       if (config['leftSelector']) {
@@ -42,11 +53,6 @@
       $(elemId).find('.image-selector').trigger('change');
 
       if (config['type'] === "fade") {
-        // set up images to display on top of each other
-        $(elemId).find('img.image-left').on('load', function() {
-          $(elemId).find('div.twentytwenty-container').height($(this).height());
-        });
-
         $(elemId).find('.fader').append('<label>slide to compare</label><br /><input type="range" min="0" max="1" step="0.01" value="' + config['defaultSlidePosition'] + '" />');
         $(elemId).find('.fader').val('0').on('input change', function(e) {
           $(elemId).find('.image-left').css('opacity', 1 - e.target.value);
@@ -72,6 +78,15 @@
   //
   // STATICS
   //
+
+  /**
+   * Creates the UI elements & images for one "side". Allows for multiple layers of images
+   * to be created for comparison.
+   *
+   * @param String elemId - Reference to the top level element that contains the images & UI
+   * @param String side - "left || "right". Used to build appropriate selectors
+   * @param Object sideData - Parsed configuration options for this "side"
+   */
   function populateSide(elemId, side, sideData) {
     var $containerRef = $(elemId).find(' div.' + side + '-container');
 
@@ -81,7 +96,6 @@
     // deploy template based on selector type
     var type = sideData['type'] === 'radio' ? 'radio' : 'drop-down';
 
-    //$containerRef.find('div.selector').append(SELECTOR_TEMPLATES[type]);
     $containerRef.append(SELECTOR_TEMPLATES[type]);
 
     // deploy options to selector, bind change event
@@ -106,7 +120,14 @@
   }
 
   /**
-   * Populates the selection methods for radio type comparisons & binds relevant events
+   * Creates the UI elements for radio type comparisons & binds relevant events. Store extra
+   * configuration needed for switching images in "data" attributes.
+   *
+   * @param jQuery Object $selector - jQuery wrapped pointer to the DOM element that contains the UI
+   * @param jQuery Object $imageRef - jQuery wrapped pointer to the DOM element that contains the map
+   * @param jQuery Object $legendRef - jQuery wrapped pointer to the DOM element that contains an
+   *                                   external legend for the map
+   * @param Array images - Array of objects that contain the options for each image in this "side"
    */
   function populateRadioSelector($selector, $imageRef, $legendRef, images) {
     var labelClass = buttonClass(images.length);
@@ -182,6 +203,16 @@
     return btnClass;
   }
 
+  /**
+   * Creates the UI elements for dropdown type comparisons & binds relevant events. Store extra
+   * configuration needed for switching images in "data" attributes.
+   *
+   * @param jQuery Object $selector - jQuery wrapped pointer to the DOM element that contains the UI
+   * @param jQuery Object $imageRef - jQuery wrapped pointer to the DOM element that contains the map
+   * @param jQuery Object $legendRef - jQuery wrapped pointer to the DOM element that contains an
+   *                                   external legend for the map
+   * @param Array images - Array of objects that contain the options for each image in this "side"
+   */
   function populateDropDown($selector, $imageRef, $legendRef, images) {
     $.each(images, function() {
       $selector.append($('<option />')
@@ -210,11 +241,21 @@
     });
   }
 
+  /**
+   * Provides the wrapper for the UI based the type of controls. Used in the function populateSide.
+   */
   var SELECTOR_TEMPLATES = {
     'radio': '<form class="image-selector"></form>',
     'drop-down': '<select class="nem-mcw-u-full-width image-selector"></select>'
   }
 
+  /**
+   * Builds the HTML that contains all of the UI and the maps based on the options available in the
+   * configuration.
+   *
+   * @param Object config - Parsed configuration options
+   * @return String html - HTML string which populates the map widget
+   */
   function buildTemplate (config) {
     var left = config['leftSelector'];
     var right = config['rightSelector'];
@@ -235,13 +276,13 @@
     if (right) {
       html += '<div class="four nem-mcw-columns right-container">' +
             '<label></label>' +
-          '</div>';
+            '</div>';
     }
 
     html += '</div>' +
-        '<div class="nem-mcw-row">' +
+          '<div class="nem-mcw-row">' +
           '<div class="twelve nem-mcw-columns twentytwenty-container">' +
-            '<div class="image-slider">';
+          '<div class="image-slider">';
 
     if (left) {
       html +='<img class="image-left twentytwenty-before" />';
@@ -278,6 +319,9 @@
   //
 
   // twentytwenty
+  /**
+   * Included widget which handles the slide to compare functionality
+   */
   $.fn.twentytwenty = function(options) {
     var options = $.extend({default_offset_pct: 0.5, orientation: 'horizontal'}, options);
     return this.each(function() {
