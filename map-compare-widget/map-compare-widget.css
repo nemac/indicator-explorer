@@ -1,21 +1,94 @@
+.nem-mcw-container {
+    font-family: "Roboto", "Helevtica", "Arial", sans-serif;
+}
+
+.nem-mcw-container .twentytwenty-container {
+    height: 100%;
+}
+
+.nem-mcw-container .twentytwenty-legend {
+    z-index: 40;
+    position: relative;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nem-mcw-container .image-left-legend {
+    margin-bottom: 10px;
+}
+
+.nem-mcw-container form {
+  margin-bottom: 10px;
+}
+
 .nem-mcw-container label {
   display: inline;
   margin-right: 10px;
 }
 
-.nem-mcw-container form {
-  margin-bottom: 0px;
+.nem-mcw-container form label {
+    box-sizing: border-box;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    line-height: normal;
+    margin-right: 1%;
+    padding: 10px;
+    background: #efefef;
+    text-transform: uppercase;
+}
+
+.nem-mcw-container form label:last-child {
+    margin-right: 0%;
+}
+
+.nem-mcw-container form label input {
+    display: none;
+}
+
+.nem-mcw-container .image-slider {
+    position: relative;
+    height: 100%;
+    margin-bottom: 10px;
+}
+
+.nem-mcw-container .image-slider img:first-child {
+    position: relative;
+}
+
+.nem-mcw-container img {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .nem-mcw-container .fader {
-  position: absolute;
-  top: 25px;
-  left: 25px;
-  z-index: 50;
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    z-index: 50;
 }
 
 .nem-mcw-container .fader label {
   margin-left: 4px;
+}
+
+.nem-mcw-container .nem-mcw-button-half {
+    width: 49.4%;
+}
+
+.nem-mcw-container .nem-mcw-button-third {
+    width: 32.5%;
+}
+
+.nem-mcw-container .nem-mcw-button-fourth {
+    width: 24.2%;
+}
+
+.nem-mcw-container form label.on {
+    background: #fe495a;
+    color: #fff;
 }
 
 .twentytwenty-horizontal .twentytwenty-handle:before, .twentytwenty-horizontal .twentytwenty-handle:after, .twentytwenty-vertical .twentytwenty-handle:before, .twentytwenty-vertical .twentytwenty-handle:after {
