@@ -53,7 +53,7 @@
       $(elemId).find('.image-selector').trigger('change');
 
       if (config['type'] === "fade") {
-        $(elemId).find('.fader').append('<label>slide to compare</label><br /><input type="range" min="0" max="1" step="0.01" value="' + config['defaultSlidePosition'] + '" />');
+        $(elemId).find('.fader').append('<label class="slide-label">slide to compare</label><div class="slide-group"><span class="slide-label">' + config['leftSelector']['slideLabel'] + '</span><input type="range" min="0" max="1" step="0.01" value="' + config['defaultSlidePosition'] + '" /><span class="slide-label">' + config['rightSelector']['slideLabel'] + '</span></div>');
         $(elemId).find('.fader').val('0').on('input change', function(e) {
           $(elemId).find('.image-left').css('opacity', 1 - e.target.value);
         });
