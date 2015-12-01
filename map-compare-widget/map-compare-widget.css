@@ -66,8 +66,8 @@
 
 .nem-mcw-container .fader {
     position: absolute;
-    right: 10px;
-    bottom: 0px;
+    left: 10px;
+    bottom: 5%;
     z-index: 50;
     text-align: center;
 }
