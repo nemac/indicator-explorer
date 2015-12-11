@@ -90,7 +90,13 @@
           html += '<span class="slide-label">' + config['leftSelector']['slideLabel'] + '</span>';
       }
 
-      html += '<input type="range" min="0" max="1" step="0.01" value="';
+      html += '<input type="range" min="0" max="1" step="';
+      if (config['slideIncrement']) {
+          html += config['slideIncrement'];
+      } else {
+          html += '0.01';
+      }
+      html += '" value="';
       html += config['defaultSlidePosition'];
       html += '" />';
       
