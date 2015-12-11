@@ -92,7 +92,7 @@
 
       html += '<input type="range" min="0" max="1" step="';
       if (config['slideIncrement']) {
-          html += config['slideIncrement'];
+          html += config['slideIncrement'].toString();
       } else {
           html += '0.01';
       }
