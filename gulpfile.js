@@ -22,12 +22,22 @@ gulp.task('bundle-demo', ['minify'], function() {
     .pipe(gulp.dest('./demo/scripts/map-compare-widget/'));
 });
 
+// put the minified files in the demo directory
+gulp.task('bundle-nemac-demo', ['minify'], function() {
+  gulp.src('./map-compare-widget/*.css')
+    .pipe(gulp.dest('../css/'));
+
+  return gulp.src('./map-compare-widget/*.js')
+    .pipe(gulp.dest('../js/'));
+});
+
 // default task does it all
-gulp.task('default', ['minify', 'bundle-demo'], function() {
+gulp.task('default', ['minify', 'bundle-demo', 'bundle-nemac-demo'], function() {
 
 });
 
 // continuous rebuild during development
 gulp.task('watch', function() {
     gulp.watch('./map-compare-widget/**', ['bundle-demo']);
+    gulp.watch('./map-compare-widget/**', ['bundle-nemac-demo']);
 });

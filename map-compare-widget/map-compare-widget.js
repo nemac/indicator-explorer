@@ -53,7 +53,7 @@
       $(elemId).find('.image-selector').trigger('change');
 
       if (config['type'] === "fade") {
-          $(elemId).find('.fader').append('<label class="slide-label">both</label><div class="slide-group"><span class="slide-label">' + (config['leftSelector'] && config['leftSelector']['slideLabel']) ? config['leftSelector']['slideLabel'] : '' + '</span><input type="range" min="0" max="1" step="0.01" value="' + config['defaultSlidePosition'] + '" /><span class="slide-label">' + (config['rightSelector'] && config['rightSelector']['slideLabel']) ? config['rightSelector']['slideLabel'] : '' + '</span></div>');
+        $(elemId).find('.fader').append(buildSlider(config));
         $(elemId).find('.fader').val('0').on('input change', function(e) {
           $(elemId).find('.image-left').css('opacity', 1 - e.target.value);
         });
@@ -78,6 +78,24 @@
   //
   // STATICS
   //
+
+  function buildSlider (config) {
+      var html = '<label class="slide-label">both</label><div class="slide-group">'
+      if (config['leftSelector'] && config['leftSelector']['slideLabel']) {
+          html += '<span class="slide-label">' + config['leftSelector']['slideLabel'] + '</span>';
+      }
+
+      html += '<input type="range" min="0" max="1" step="0.01" value="';
+      html += config['defaultSlidePosition'];
+      html += '" />';
+      
+      if (config['rightSelector'] && config['rightSelector']['slideLabel']) {
+          html += '<span class="slide-label">' + config['rightSelector']['slideLabel'] + '</span>';
+      }
+      html += '</div>';
+
+      return html
+  }
 
   /**
    * Creates the UI elements & images for one "side". Allows for multiple layers of images
