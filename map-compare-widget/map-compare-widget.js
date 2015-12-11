@@ -79,6 +79,11 @@
   // STATICS
   //
 
+  /**
+   * Builds the html for the slider.
+   *
+   * @param Object config
+   */
   function buildSlider (config) {
       var html = '<label class="slide-label">both</label><div class="slide-group">'
       if (config['leftSelector'] && config['leftSelector']['slideLabel']) {
