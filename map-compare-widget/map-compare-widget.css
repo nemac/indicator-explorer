@@ -50,6 +50,10 @@
     display: none;
 }
 
+.nem-mcw-container .label-body span {
+    font-size: 12px;
+}
+
 .nem-mcw-container .image-slider {
     position: relative;
     height: 100%;

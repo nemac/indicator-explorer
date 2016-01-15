@@ -169,12 +169,12 @@
                     .data('legend', this['legend'])
                     .data('legend-alt', this['legend-alt'])
                    );
-      $label.append($('<span class="label-body" />').text(this['name']));
+      $label.append($('<span class="label-body" />').html(this['name']));
 
       $selector.append($label);
 
       if (this['default']) {
-        $('input[name=sl][value="' + this['source'] + '"]').prop('checked', true);
+        $selector.find('input[name=sl][value="' + this['source'] + '"]').prop('checked', true);
         $label.addClass("on");
         $imageRef.attr('alt', this["alt"])
             .attr('title', this["alt"]);
@@ -190,7 +190,7 @@
     });
 
     $selector.on('change', function() {
-      var $elem = $("input[name='sl']:checked");
+      var $elem = $(this).find("input[name='sl']:checked");
       $imageRef.attr('src', $elem.val())
             .attr('alt', $elem.data("alt"))
             .attr('title', $elem.data("alt"));
@@ -246,7 +246,7 @@
     $.each(images, function() {
       $selector.append($('<option />')
                        .val(this['source'])
-                       .text(this['name'])
+                       .html(this['name'])
                        .data('alt', this['alt'])
                        .data('legend', this['legend'])
                        .data('legend-alt', this['legend-alt']));
